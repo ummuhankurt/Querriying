@@ -10,7 +10,7 @@ using Querriying;
 namespace Querriying.Migrations
 {
     [DbContext(typeof(ETicaretContext))]
-    [Migration("20221116044532_mig1")]
+    [Migration("20221116124944_mig1")]
     partial class mig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,7 @@ namespace Querriying.Migrations
 
             modelBuilder.Entity("Querriying.Urun", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UrunId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -54,9 +54,22 @@ namespace Querriying.Migrations
                     b.Property<string>("UrunAdi")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("UrunId");
 
                     b.ToTable("Urunler");
+                });
+
+            modelBuilder.Entity("Querriying.UrunParca", b =>
+                {
+                    b.Property<int>("UrunId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParcaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UrunId", "ParcaId");
+
+                    b.ToTable("UrunParcas");
                 });
 
             modelBuilder.Entity("Querriying.Parca", b =>

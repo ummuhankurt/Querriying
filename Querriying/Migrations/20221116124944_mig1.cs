@@ -10,14 +10,26 @@ namespace Querriying.Migrations
                 name: "Urunler",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    UrunId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UrunAdi = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Fiyat = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Urunler", x => x.Id);
+                    table.PrimaryKey("PK_Urunler", x => x.UrunId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UrunParcas",
+                columns: table => new
+                {
+                    UrunId = table.Column<int>(type: "int", nullable: false),
+                    ParcaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UrunParcas", x => new { x.UrunId, x.ParcaId });
                 });
 
             migrationBuilder.CreateTable(
@@ -36,7 +48,7 @@ namespace Querriying.Migrations
                         name: "FK_Parcalar_Urunler_UrunId",
                         column: x => x.UrunId,
                         principalTable: "Urunler",
-                        principalColumn: "Id",
+                        principalColumn: "UrunId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -50,6 +62,9 @@ namespace Querriying.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Parcalar");
+
+            migrationBuilder.DropTable(
+                name: "UrunParcas");
 
             migrationBuilder.DropTable(
                 name: "Urunler");

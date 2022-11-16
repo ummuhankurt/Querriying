@@ -41,7 +41,7 @@ namespace Querriying.Migrations
 
             modelBuilder.Entity("Querriying.Urun", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UrunId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -52,9 +52,22 @@ namespace Querriying.Migrations
                     b.Property<string>("UrunAdi")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("UrunId");
 
                     b.ToTable("Urunler");
+                });
+
+            modelBuilder.Entity("Querriying.UrunParca", b =>
+                {
+                    b.Property<int>("UrunId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParcaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UrunId", "ParcaId");
+
+                    b.ToTable("UrunParcas");
                 });
 
             modelBuilder.Entity("Querriying.Parca", b =>

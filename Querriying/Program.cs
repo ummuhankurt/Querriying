@@ -57,6 +57,176 @@ namespace Querriying
             //}
             //await urunler.ToListAsync(); // Bu durum sadece foreach'te geçerli değil. ToListAsync() ile de aynı çalışma sergilenir.
             #endregion
+
+            #region Çoğul Veri Getiren Sorgulama Fonksiyonları
+
+            #region ToListAsync
+            //Üretilen sorguyu execute ettirmemizi sağlayan bir fonksiyoundur. IQueryable > IEnumerable
+            //var urunler = context.Urunler.ToListAsync();
+            //var urunler = (from u in context.Urunler select u).ToListAsync();
+            #endregion
+
+            #region Where
+            //Oluşturulan sorguya where şartı eklememizi sağlayan bir fonksiyondur.
+            //var urunler = context.Urunler.Where(u => u.UrunId >= 500).ToListAsync();
+            //var urunler = context.Urunler.Where(u => u.UrunAdi.StartsWith("A")).ToListAsync(); // A ile başlayan ürünler. Arka planda Like 'a%' sorgusunu çalıştırır.
+            //var urunler = from u in context.Urunler where u.UrunId > 500 && u.UrunAdi.EndsWith("7") select u;
+            //var data = await urunler.ToListAsync();
+            #endregion
+
+            #region OrderBy 
+            //Sorgu üzerinde sıralama yapmamızı sağlayan bir fonksiyondur.Default olarak asc (ascending sıralama yapar).
+            //var urunler = context.Urunler.Where(u => u.UrunId > 500 || u.UrunAdi.EndsWith("2")).OrderBy(u => u.UrunAdi); // Metod syntax
+            //var urunler = from u in context.Urunler where u.UrunId > 500 || u.UrunAdi.StartsWith("2") orderby u.UrunAdi select u; // Query syntax
+            #endregion
+
+            #region ThenBy
+            //OrderBy üzerinde yapılan sıralama işlemini farklı kolonlarda uygulamamızı sağlayan fonksiyondur.
+            //Örneğin ürün adı aynı olan iki veri var, bunları da kendi aralarında ThenBy ile sıralayabiliyoruz.
+            //var urunler = context.Urunler.Where(u => u.UrunId > 500 || u.UrunAdi.EndsWith("2")).OrderBy(u => u.UrunAdi).ThenBy(u => u.Parcalar);
+            #endregion
+
+            #region OrderByDescending 
+            //Büyükten küçüğe. Azalan sırada sıralar.
+            #endregion
+
+            #region ThenByDescending
+            //Büyükten küçüğe. Azalan sırada sıralar.
+            #endregion
+
+            #endregion
+
+            #region Tekil Veri Getiren Sorgulama Fonksiyonları
+            //Yapılan sorguda sade ve sadece tek bir verinin gelmesi amaçlanıyorsa Single ya da SingleOrDefault fonksiyonları kullanılabilir.
+            //Yapılan çalışmanın mantığında birden fazla verinin geldiği durumda bir patlamayla yazılımı uyarmak istiyorsan burada kullanman gereken temel sorgulayıcı fonk. Single ,SingleOrDefault.
+            #region SingleAsync
+            //Eğer ki, sorgu neticesinde birden fazla veri geliyorsa ya da hiç gelmiyorsa her iki durumda da exception fırlatır.
+            //var urun = await  context.Urunler.SingleAsync(u => u.UrunAdi == "ssd");
+            //Console.WriteLine();
+            #endregion
+
+            #region SingleOrDefaultAsync
+            //Sorgu sonucunda birden fazla değer geliyorsa exception fırlatır,hiç veri gelmiyorsa null döner.
+            //var urun2 = await context.Urunler.SingleOrDefaultAsync(p => p.UrunAdi == "Kazak");
+
+            #endregion
+
+            #region FirstAsync
+            //Sorgu neticesinde tek bir veriye odaklanıyosam,(tekrar eden verilerden de bir tanesi olabilir) örneğin veritabanındaki Ahmet isimli kullanıcılardan ilkini getirir.
+            //Eğer ki hiç veri gelmiyorsa hata fırlatır. Elde edilen verilerden ilkini getirir.
+            //var urun = await context.Urunler.FirstAsync(p => p.UrunAdi == "Pantolon");
+            //Console.WriteLine(urun.UrunAdi);
+            #endregion
+
+            #region FirstOrDefaultAsync
+            //Sorgu neticesinde elde edilen verilerlen ilkini getirir. Eğer ki hiç veri gelmiyorsa null değerini döndürür.
+            //var urun = await context.Urunler.FirstOrDefaultAsync(p => p.UrunAdi == "asdsd");
+            //Console.WriteLine(urun);
+            #endregion
+
+            #region Find
+            //Filtreleme işlemini primary key'e göre yapacaksan, Find()' i kullanabilirsin.Hızlıdır.
+            //Verilen Id değeri veri tabanında herhangi bir veriye karşılık gelmiyorsa hata vermez.
+            //Urun urun = await context.Urunler.FindAsync(35); // Lambda expression yok, id değeri direkt olarak verilir.
+            //Console.WriteLine();
+            #endregion
+
+            #region LastAsync
+            //Last ve LastOrDefault ile First ve FirstOrDefault davranışları tamamen aynıdır. Sadece gelen verilerden sonuncusunu alır.
+            //Sorgu neticesinde hiç veri gelmezse hata fırlatır.
+            //Last veya LasrOrDefault kullanırken OrderBy yapmamız lazım.
+            //Urun urun = await context.Urunler.OrderBy(u => u.Fiyat).LastAsync(u => u.UrunAdi.StartsWith("Pantolon"));
+            //Console.WriteLine();
+            #endregion
+            #region LastOrDefaultAsync
+            // Sorgu neticesinde veri gelmezse hata fırlatmaz.null döner.
+            #endregion
+            #endregion
+
+            #region CountAsync
+            // Oluşturulan sorgunun execute edilmesi neticesinde kaç adet satırın elde edileceğini sayısal olarak(int) bizlere bildiren fonksiyondur.
+            //var urunler = (await context.Urunler.ToListAsync()).Count();
+            //var urunler = await context.Urunler.CountAsync(); // ToListAsync() çalıştırmana gerek yok. CountAsync tetiklendiği anda sorguya count fonksiyonunu ekleyecek ve execute edecek.
+            //Yani sonucu belleğe çekip saymana gerek yok, direkt sonucu alabiliriz.
+            //Console.WriteLine(urunler);
+            #endregion
+
+            #region LongCountAsync: Count int döner. Veri 5 milyar tanedir. Bunu int karşılamaz. LongCountAsync kullanılır.
+            // Şartlı verileri de sayabilirsin.
+            //var urunler = await context.Urunler.LongCountAsync(p => p.Fiyat > 200);
+            //Console.WriteLine();
+            #endregion
+
+            #region AnyAsync
+            //Sorgu neticesinde verinin gelip gelmediğini bool türünde dönen fonksiyondur. Şu sorgu neticesinde veri geliyor mu? gelmiyor mu?
+            //var urunler = await context.Urunler.AnyAsync(u => u.Fiyat == 20000000);
+            Console.WriteLine();
+            #endregion
+
+            #region MaxAsync
+            //var fiyat = await context.Urunler.MaxAsync(u => u.Fiyat);
+            //Console.WriteLine(fiyat);
+            #endregion
+
+            #region MinAsync
+            //var fiyat = await context.Urunler.MinAsync(u => u.Fiyat);
+            //Console.WriteLine(fiyat);
+            #endregion
+
+            #region Distinct
+            //Sorguda mükerrer kayıtlar varsa bunları tekilleştiren bir işleve sahip fonksiyondur.
+            //Distinct() dediğin anda hala IQueryable'dır. Çalışması için execute etmen lazım. ToListAsync().
+            //var urunler = await context.Urunler.Distinct().ToListAsync();
+            //foreach (var item in urunler)
+            //{
+            //    Console.WriteLine(item.UrunAdi);
+            //}
+            #endregion
+
+            #region AllAsync
+            //Bir sorgu neticesinde gelen verilerin,verilen şarta uyup uymadığını kontrol etmektedir. Eğer ki tüm veriler şarta uyuyorsa true, uymuyorsa false döndürecektir.
+            //var m = await context.Urunler.AllAsync(u => u.Fiyat >= 0);
+            //Console.WriteLine(m);
+            #endregion
+
+            #region SumAsync
+            //Toplam fonksiyonu.
+            //var fiyatToplam = await context.Urunler.SumAsync(u => u.Fiyat);
+            //Console.WriteLine(fiyatToplam);
+            #endregion
+
+            #region AverageAsync
+            //Vermiş olduğumuz sayısal propertyin aritmetik ortalamasını alır.
+            //var aritmetikOr = await context.Urunler.AverageAsync(u => u.Fiyat);
+            //Console.WriteLine(aritmetikOr);
+            #endregion
+
+            #region ContainAsync
+            //Like sorgusu oluşturmamızı sağlar. Where ile beraber kullanılır.
+            //var urunler = await context.Urunler.Where(u => u.UrunAdi.Contains("a")).ToListAsync();
+            //foreach (var item in urunler)
+            //{
+            //    Console.WriteLine(item.UrunAdi);
+            //}
+            #endregion
+
+            #region StartsWith
+            //var urunler = await context.Urunler.Where(u => u.UrunAdi.StartsWith("a")).ToListAsync();
+
+            //foreach (var item in urunler)
+            //{
+            //    Console.WriteLine(item.UrunAdi);
+            //}
+            #endregion
+
+            #region EndsWith
+            // var urunler = await context.Urunler.Where(u => u.UrunAdi.EndsWith("a")).ToListAsync();
+
+            //foreach (var item in urunler)
+            //{
+            //    Console.WriteLine(item.UrunAdi);
+            //}
+            #endregion
         }
     }
 }
