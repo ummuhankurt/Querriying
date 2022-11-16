@@ -47,7 +47,7 @@ namespace Querriying
 
             #region Deffered Execution(Ertelenmiş Çalışma)
             // IQueryable çalışmalarında ilgili kod yazıldığı noktada tetiklenmez/çalıştırılmaz. Yani ilgili kod yazıldığı noktada sorguyu generate etmez.
-            // Nerede eder? Çalıştırıldığında/execute edildiği noktada tetiklenir. İşte bu duruma ertelenmiş çalışma denir.
+            //Nerede eder? Çalıştırıldığında / execute edildiği noktada tetiklenir.İşte bu duruma ertelenmiş çalışma denir.
             //int urunId = 5;
             //var urunler = from u in context.Urunler where u.UrunId > urunId select u;
             //urunId = 200;
@@ -55,6 +55,7 @@ namespace Querriying
             //{
             //    Console.WriteLine(urun.UrunAdi); // urunId ' si 200 den büyük olanları getirir.
             //}
+            //await urunler.ToListAsync(); // Bu durum sadece foreach'te geçerli değil. ToListAsync() ile de aynı çalışma sergilenir.
             #endregion
         }
     }
