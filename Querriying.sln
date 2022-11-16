@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32602.291
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Querriying", "Querriying\Querriying.csproj", "{345804F1-9C5A-483B-9963-0C2EC01F0BFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{345804F1-9C5A-483B-9963-0C2EC01F0BFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{345804F1-9C5A-483B-9963-0C2EC01F0BFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{345804F1-9C5A-483B-9963-0C2EC01F0BFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{345804F1-9C5A-483B-9963-0C2EC01F0BFA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BDFE8655-F72B-44D0-9EB9-3573D57A717B}
+	EndGlobalSection
+EndGlobal
