@@ -21,24 +21,12 @@ namespace Querriying.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UrunParcas",
-                columns: table => new
-                {
-                    UrunId = table.Column<int>(type: "int", nullable: false),
-                    ParcaId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UrunParcas", x => new { x.UrunId, x.ParcaId });
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Parcalar",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ParaAdi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ParcaAdi = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UrunId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -52,19 +40,48 @@ namespace Querriying.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UrunParcalar",
+                columns: table => new
+                {
+                    UrunId = table.Column<int>(type: "int", nullable: false),
+                    ParcaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UrunParcalar", x => new { x.UrunId, x.ParcaId });
+                    table.ForeignKey(
+                        name: "FK_UrunParcalar_Parcalar_ParcaId",
+                        column: x => x.ParcaId,
+                        principalTable: "Parcalar",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UrunParcalar_Urunler_UrunId",
+                        column: x => x.UrunId,
+                        principalTable: "Urunler",
+                        principalColumn: "UrunId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Parcalar_UrunId",
                 table: "Parcalar",
                 column: "UrunId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UrunParcalar_ParcaId",
+                table: "UrunParcalar",
+                column: "ParcaId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Parcalar");
+                name: "UrunParcalar");
 
             migrationBuilder.DropTable(
-                name: "UrunParcas");
+                name: "Parcalar");
 
             migrationBuilder.DropTable(
                 name: "Urunler");

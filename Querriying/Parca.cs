@@ -9,6 +9,6 @@ namespace Querriying
     public class Parca
     {
         public int Id { get; set; }
-        public string ParaAdi { get; set; }
+        public string ParcaAdi { get; set; }
     }
 }

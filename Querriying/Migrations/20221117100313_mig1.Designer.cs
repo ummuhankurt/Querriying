@@ -10,7 +10,7 @@ using Querriying;
 namespace Querriying.Migrations
 {
     [DbContext(typeof(ETicaretContext))]
-    [Migration("20221116124944_mig1")]
+    [Migration("20221117100313_mig1")]
     partial class mig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace Querriying.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ParaAdi")
+                    b.Property<string>("ParcaAdi")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UrunId")
@@ -69,7 +69,9 @@ namespace Querriying.Migrations
 
                     b.HasKey("UrunId", "ParcaId");
 
-                    b.ToTable("UrunParcas");
+                    b.HasIndex("ParcaId");
+
+                    b.ToTable("UrunParcalar");
                 });
 
             modelBuilder.Entity("Querriying.Parca", b =>
@@ -77,6 +79,25 @@ namespace Querriying.Migrations
                     b.HasOne("Querriying.Urun", null)
                         .WithMany("Parcalar")
                         .HasForeignKey("UrunId");
+                });
+
+            modelBuilder.Entity("Querriying.UrunParca", b =>
+                {
+                    b.HasOne("Querriying.Parca", "Parca")
+                        .WithMany()
+                        .HasForeignKey("ParcaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Querriying.Urun", "Urun")
+                        .WithMany()
+                        .HasForeignKey("UrunId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parca");
+
+                    b.Navigation("Urun");
                 });
 
             modelBuilder.Entity("Querriying.Urun", b =>

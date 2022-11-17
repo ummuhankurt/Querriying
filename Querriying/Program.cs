@@ -227,6 +227,95 @@ namespace Querriying
             //    Console.WriteLine(item.UrunAdi);
             //}
             #endregion
+
+            #region Sorgu Sonucu Dönüşüm Fonksiyonları
+            //Bu fonksiyonlar ile sorgu neticesinde elde edilen verileri isteğimiz doğrultusunda farklı türlerde projecsiyon edebiliyoruz.
+
+            #region ToDictionaryAsync
+            //Sorgu neticesinde gelecek olan veriyi bir dictionary olarak elde etmek/karşılamak istiyorsak kullanılır.{Key,value}
+            //ToList ile aynı amaca hizmet vermektedir. Yani,oluşturulan sorguyu execute edip neticesini alırlar.ToList -> List<TEntity>.ToDictionary -> {key,value}
+            //var urun = await context.Urunler.ToDictionaryAsync(u => u.UrunAdi, u => u.Fiyat);
+            //Console.WriteLine();
+            #endregion
+
+            #region ToArrayAsync   
+            //Oluşturulan sorguyu dizi olarak elde eder. ToList ile muadil amaca hizmet eder.Yani, sorguyu execute eder, gelen sonucu entity dizisi olarak elde eder.
+            //var urunler = await context.Urunler.ToArrayAsync();
+            //for (int i = 0; i < urunler.Length; i++)
+            //{
+            //    Console.WriteLine(urunler[i].UrunAdi);
+            //}
+            #endregion
+
+            #region Select
+            //İşlevsel olarak birden fazla davranışı söz konusudur.
+            //1) Select fonksiyonu,generate edilecek sorgunun çekilecek kolonlarını ayarlamamızı sağlamaktadır.
+            //var urunler = await context.Urunler.Select(u => new Urun
+            //{
+            //    UrunId = u.UrunId,
+            //    Fiyat = u.Fiyat
+            //}).ToListAsync();
+
+            //Console.WriteLine();
+
+            //2) Select fonksiyonu, gelen verileri farklı türlerde karşılamamızı sağlar.T, anonim.
+
+            //var urunler = await context.Urunler.Select(u => new
+            //{
+            //    UrunId = u.UrunId,
+            //    Fiyat = u.Fiyat
+            //}).ToListAsync();
+
+            //Console.WriteLine();
+
+            #region C#'ta anonim tip
+            //Tipsiz
+            var d = new
+            {
+                A = "Ahmet"
+            };
+            #endregion
+            #endregion
+
+            #region SelectMany
+            //Select ile aynı amaca hizmet eder.Lakin, ilişkisel tablolar neticesinde gelen koleksiyonel verileri de tekilleştirip projeksiyon etmemizi sağlar.
+            //Join yapılarda kullanılır.
+            //var urunler = await context.Urunler.Include(u => u.Parcalar).SelectMany(u => u.Parcalar, (u, p) => new
+            //{
+            //    u.UrunId,
+            //    u.Fiyat,
+            //    p.ParcaAdi
+            //}).ToListAsync();
+            //Console.WriteLine();
+            #endregion
+
+            #region GroupBy Fonksiyonu
+            //Gruplama yapmamızı sağlayan fonk.
+            //Method Syntax
+            //var datas = await context.Urunler.GroupBy(u => u.Fiyat).Select(group => new
+            //{
+            //    miktar = group.Count(),
+            //    fiyat = group.Key
+            //}).ToListAsync();
+            //foreach (var item in datas)
+            //{
+            //    Console.WriteLine("Fiyat : " + item.fiyat + " Miktar : " + item.miktar);
+            //}
+            //Query Syntax
+            var datas = from u in context.Urunler
+                        group u by u.Fiyat into g
+                        select new
+                        {
+                            miktar = g.Count(),
+                            fiyat = g.Key //Hangi kolonun değerini gruplayıp saydırdıysan key değeri o kolondur.
+                        };
+            foreach (var item in datas)
+            {
+                Console.WriteLine("Fiyat : " + item.fiyat + " Miktar : " + item.miktar);
+            }
+
+            #endregion
+            #endregion
         }
     }
 }
