@@ -312,10 +312,18 @@ namespace Querriying
             foreach (var item in datas)
             {
                 Console.WriteLine("Fiyat : " + item.fiyat + " Miktar : " + item.miktar);
-            }
+                //}
 
-            #endregion
-            #endregion
+                #endregion
+                #region Foreach Fonksiyonu
+                //Foreach döngüsünün metod halidir.
+                await datas.ForEachAsync(x =>
+                {
+                });
+                
+                #endregion
+                #endregion
+            }
         }
     }
 }
